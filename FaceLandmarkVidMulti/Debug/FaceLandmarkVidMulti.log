@@ -1,0 +1,15 @@
+﻿  FaceLandmarkVidMulti.cpp
+C:\Users\USER\source\repos\OpenFace\lib\3rdParty\dlib\include\dlib\console_progress_indicator.h(153,28): warning C4834: 'nodiscard' 특성이 포함된 함수의 반환 값을 버리는 중
+C:\Users\USER\source\repos\OpenFace\lib\3rdParty\dlib\include\dlib\image_transforms\morphological_operations.h(1,1): warning C4819: 현재 코드 페이지(949)에서 표시할 수 없는 문자가 파일에 들어 있습니다. 데이터가 손실되지 않게 하려면 해당 파일을 유니코드 형식으로 저장하십시오.
+C:\Users\USER\source\repos\OpenFace\exe\FaceLandmarkVidMulti\FaceLandmarkVidMulti.cpp(94,41): warning C4018: '<': signed 또는 unsigned가 일치하지 않습니다.
+  0개 파일이 복사되었습니다.
+dlib.lib(base64_kernel_1.obj) : warning LNK4099: 'dlib.pdb' PDB를 'dlib.lib(base64_kernel_1.obj)' 또는 'C:\Users\USER\source\repos\OpenFace\Debug\dlib.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+dlib.lib(entropy_decoder_kernel_2.obj) : warning LNK4099: 'dlib.pdb' PDB를 'dlib.lib(entropy_decoder_kernel_2.obj)' 또는 'C:\Users\USER\source\repos\OpenFace\Debug\dlib.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+dlib.lib(test_for_odr_violations.obj) : warning LNK4099: 'dlib.pdb' PDB를 'dlib.lib(test_for_odr_violations.obj)' 또는 'C:\Users\USER\source\repos\OpenFace\Debug\dlib.pdb'에서 찾을 수 없습니다. 디버그 정보가 없는 것처럼 개체를 링크합니다.
+  FaceLandmarkVidMulti.vcxproj -> C:\Users\USER\source\repos\OpenFace\Debug\FaceLandmarkVidMulti.exe
+  0개 파일이 복사되었습니다.
+  0개 파일이 복사되었습니다.
+  0개 파일이 복사되었습니다.
+  공유 위반입니다.
+  디렉터리를 만들 수 없습니다 - C:\Users\USER\source\repos\OpenFace\Debug\classifiers
+  0개 파일이 복사되었습니다.

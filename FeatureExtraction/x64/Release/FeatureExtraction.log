@@ -1,0 +1,46 @@
+﻿  FaceRobot_AIspeaker.cpp
+D:\OpenFace - mouth\lib\3rdParty\dlib\include\dlib\console_progress_indicator.h(153,28): warning C4834: discarding return value of function with 'nodiscard' attribute
+D:\OpenFace - mouth\lib\3rdParty\dlib\include\dlib\image_transforms\morphological_operations.h(1,1): warning C4819: The file contains a character that cannot be represented in the current code page (949). Save the file in Unicode format to prevent data loss
+D:\OpenFace - mouth\lib\local\dynamixel_sdk\include\group_bulk_read.h(43,35): warning C4251: 'dynamixel::GroupBulkRead::id_list_': class 'std::vector<uchar,std::allocator<uchar>>' needs to have dll-interface to be used by clients of class 'dynamixel::GroupBulkRead'
+D:\OpenFace - mouth\lib\3rdParty\OpenCV\include\opencv2\core\mat.hpp(2681,14): message : see declaration of 'std::vector<uchar,std::allocator<uchar>>'
+D:\OpenFace - mouth\lib\local\dynamixel_sdk\include\group_bulk_read.h(44,35): warning C4251: 'dynamixel::GroupBulkRead::address_list_': class 'std::map<uint8_t,uint16_t,std::less<uint8_t>,std::allocator<std::pair<const uint8_t,uint16_t>>>' needs to have dll-interface to be used by clients of class 'dynamixel::GroupBulkRead'
+D:\OpenFace - mouth\lib\local\dynamixel_sdk\include\group_bulk_read.h(44,8): message : see declaration of 'std::map<uint8_t,uint16_t,std::less<uint8_t>,std::allocator<std::pair<const uint8_t,uint16_t>>>'
+D:\OpenFace - mouth\lib\local\dynamixel_sdk\include\group_bulk_read.h(45,35): warning C4251: 'dynamixel::GroupBulkRead::length_list_': class 'std::map<uint8_t,uint16_t,std::less<uint8_t>,std::allocator<std::pair<const uint8_t,uint16_t>>>' needs to have dll-interface to be used by clients of class 'dynamixel::GroupBulkRead'
+D:\OpenFace - mouth\lib\local\dynamixel_sdk\include\group_bulk_read.h(44,8): message : see declaration of 'std::map<uint8_t,uint16_t,std::less<uint8_t>,std::allocator<std::pair<const uint8_t,uint16_t>>>'
+D:\OpenFace - mouth\lib\local\dynamixel_sdk\include\group_bulk_read.h(46,35): warning C4251: 'dynamixel::GroupBulkRead::data_list_': class 'std::map<uint8_t,uint8_t *,std::less<uint8_t>,std::allocator<std::pair<const uint8_t,uint8_t *>>>' needs to have dll-interface to be used by clients of class 'dynamixel::GroupBulkRead'
+D:\OpenFace - mouth\lib\local\dynamixel_sdk\include\group_bulk_read.h(46,8): message : see declaration of 'std::map<uint8_t,uint8_t *,std::less<uint8_t>,std::allocator<std::pair<const uint8_t,uint8_t *>>>'
+D:\OpenFace - mouth\lib\local\dynamixel_sdk\include\group_bulk_read.h(47,35): warning C4251: 'dynamixel::GroupBulkRead::error_list_': class 'std::map<uint8_t,uint8_t *,std::less<uint8_t>,std::allocator<std::pair<const uint8_t,uint8_t *>>>' needs to have dll-interface to be used by clients of class 'dynamixel::GroupBulkRead'
+D:\OpenFace - mouth\lib\local\dynamixel_sdk\include\group_bulk_read.h(46,8): message : see declaration of 'std::map<uint8_t,uint8_t *,std::less<uint8_t>,std::allocator<std::pair<const uint8_t,uint8_t *>>>'
+D:\OpenFace - mouth\lib\local\dynamixel_sdk\include\group_bulk_write.h(43,35): warning C4251: 'dynamixel::GroupBulkWrite::id_list_': class 'std::vector<uchar,std::allocator<uchar>>' needs to have dll-interface to be used by clients of class 'dynamixel::GroupBulkWrite'
+D:\OpenFace - mouth\lib\3rdParty\OpenCV\include\opencv2\core\mat.hpp(2681,14): message : see declaration of 'std::vector<uchar,std::allocator<uchar>>'
+D:\OpenFace - mouth\lib\local\dynamixel_sdk\include\group_bulk_write.h(44,35): warning C4251: 'dynamixel::GroupBulkWrite::address_list_': class 'std::map<uint8_t,uint16_t,std::less<uint8_t>,std::allocator<std::pair<const uint8_t,uint16_t>>>' needs to have dll-interface to be used by clients of class 'dynamixel::GroupBulkWrite'
+D:\OpenFace - mouth\lib\local\dynamixel_sdk\include\group_bulk_read.h(44,8): message : see declaration of 'std::map<uint8_t,uint16_t,std::less<uint8_t>,std::allocator<std::pair<const uint8_t,uint16_t>>>'
+D:\OpenFace - mouth\lib\local\dynamixel_sdk\include\group_bulk_write.h(45,35): warning C4251: 'dynamixel::GroupBulkWrite::length_list_': class 'std::map<uint8_t,uint16_t,std::less<uint8_t>,std::allocator<std::pair<const uint8_t,uint16_t>>>' needs to have dll-interface to be used by clients of class 'dynamixel::GroupBulkWrite'
+D:\OpenFace - mouth\lib\local\dynamixel_sdk\include\group_bulk_read.h(44,8): message : see declaration of 'std::map<uint8_t,uint16_t,std::less<uint8_t>,std::allocator<std::pair<const uint8_t,uint16_t>>>'
+D:\OpenFace - mouth\lib\local\dynamixel_sdk\include\group_bulk_write.h(46,35): warning C4251: 'dynamixel::GroupBulkWrite::data_list_': class 'std::map<uint8_t,uint8_t *,std::less<uint8_t>,std::allocator<std::pair<const uint8_t,uint8_t *>>>' needs to have dll-interface to be used by clients of class 'dynamixel::GroupBulkWrite'
+D:\OpenFace - mouth\lib\local\dynamixel_sdk\include\group_bulk_read.h(46,8): message : see declaration of 'std::map<uint8_t,uint8_t *,std::less<uint8_t>,std::allocator<std::pair<const uint8_t,uint8_t *>>>'
+D:\OpenFace - mouth\lib\local\dynamixel_sdk\include\group_sync_read.h(43,35): warning C4251: 'dynamixel::GroupSyncRead::id_list_': class 'std::vector<uchar,std::allocator<uchar>>' needs to have dll-interface to be used by clients of class 'dynamixel::GroupSyncRead'
+D:\OpenFace - mouth\lib\3rdParty\OpenCV\include\opencv2\core\mat.hpp(2681,14): message : see declaration of 'std::vector<uchar,std::allocator<uchar>>'
+D:\OpenFace - mouth\lib\local\dynamixel_sdk\include\group_sync_read.h(44,35): warning C4251: 'dynamixel::GroupSyncRead::data_list_': class 'std::map<uint8_t,uint8_t *,std::less<uint8_t>,std::allocator<std::pair<const uint8_t,uint8_t *>>>' needs to have dll-interface to be used by clients of class 'dynamixel::GroupSyncRead'
+D:\OpenFace - mouth\lib\local\dynamixel_sdk\include\group_bulk_read.h(46,8): message : see declaration of 'std::map<uint8_t,uint8_t *,std::less<uint8_t>,std::allocator<std::pair<const uint8_t,uint8_t *>>>'
+D:\OpenFace - mouth\lib\local\dynamixel_sdk\include\group_sync_read.h(45,35): warning C4251: 'dynamixel::GroupSyncRead::error_list_': class 'std::map<uint8_t,uint8_t *,std::less<uint8_t>,std::allocator<std::pair<const uint8_t,uint8_t *>>>' needs to have dll-interface to be used by clients of class 'dynamixel::GroupSyncRead'
+D:\OpenFace - mouth\lib\local\dynamixel_sdk\include\group_bulk_read.h(46,8): message : see declaration of 'std::map<uint8_t,uint8_t *,std::less<uint8_t>,std::allocator<std::pair<const uint8_t,uint8_t *>>>'
+D:\OpenFace - mouth\lib\local\dynamixel_sdk\include\group_sync_write.h(43,35): warning C4251: 'dynamixel::GroupSyncWrite::id_list_': class 'std::vector<uchar,std::allocator<uchar>>' needs to have dll-interface to be used by clients of class 'dynamixel::GroupSyncWrite'
+D:\OpenFace - mouth\lib\3rdParty\OpenCV\include\opencv2\core\mat.hpp(2681,14): message : see declaration of 'std::vector<uchar,std::allocator<uchar>>'
+D:\OpenFace - mouth\lib\local\dynamixel_sdk\include\group_sync_write.h(44,35): warning C4251: 'dynamixel::GroupSyncWrite::data_list_': class 'std::map<uint8_t,uint8_t *,std::less<uint8_t>,std::allocator<std::pair<const uint8_t,uint8_t *>>>' needs to have dll-interface to be used by clients of class 'dynamixel::GroupSyncWrite'
+D:\OpenFace - mouth\lib\local\dynamixel_sdk\include\group_bulk_read.h(46,8): message : see declaration of 'std::map<uint8_t,uint8_t *,std::less<uint8_t>,std::allocator<std::pair<const uint8_t,uint8_t *>>>'
+D:\OpenFace - mouth\lib\local\Eigen\src\Core\arch\Default\Half.h(1,1): warning C4819: The file contains a character that cannot be represented in the current code page (949). Save the file in Unicode format to prevent data loss
+D:\OpenFace - mouth\lib\local\Eigen\src\Core\arch\Default\BFloat16.h(1,1): warning C4819: The file contains a character that cannot be represented in the current code page (949). Save the file in Unicode format to prevent data loss
+D:\OpenFace - mouth\lib\local\Eigen\src\Core\arch\Default\GenericPacketMathFunctions.h(676,1): warning C4819: The file contains a character that cannot be represented in the current code page (949). Save the file in Unicode format to prevent data loss
+D:\OpenFace - mouth\lib\local\Eigen\src\Core\products\GeneralBlockPanelKernel.h(2063,1): warning C4819: The file contains a character that cannot be represented in the current code page (949). Save the file in Unicode format to prevent data loss
+  0개 파일이 복사되었습니다.
+  Generating code
+  Not all modules are compiled with -Gy (function comdat), build without incremental LTCG.
+D:\OpenFace - mouth\exe\FeatureExtraction\MacrosAndFunctions_small_JA.h(1369): warning C4715: 'csv_read_row': not all control paths return a value
+  Finished generating code
+  FeatureExtraction.vcxproj -> D:\OpenFace - mouth\x64\Release\FeatureExtraction.exe
+  파일을 찾을 수 없습니다-Release
+  0개 파일이 복사되었습니다.
+  0개 파일이 복사되었습니다.
+  0개 파일이 복사되었습니다.
+  0개 파일이 복사되었습니다.

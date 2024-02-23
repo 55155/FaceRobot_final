@@ -1,0 +1,2 @@
+﻿  FaceRobot_Keyboard.cpp
+D:\Google Drive\_생동화로봇\생동화로봇\OpenFace - mouth\exe\FeatureExtraction\FaceRobot_Keyboard.cpp : fatal error C1041: cannot open program database 'D:\Google Drive\_생동화로봇\생동화로봇\OpenFace - mouth\exe\FeatureExtraction\x64\Release\vc143.pdb'; if multiple CL.EXE write to the same .PDB file, please use /FS
