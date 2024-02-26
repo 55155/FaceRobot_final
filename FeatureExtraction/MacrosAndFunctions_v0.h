@@ -2772,32 +2772,3 @@ void test(int& status) {
 	}
 }
 
-VectorXd robot_to_cam(double x, double y, double z) {
-	// 실제값 * 보정값까지 고려
-	VectorXd pH(3);
-	// VectorXd 를 쓰는 경우와 Mat1f, Point3f 를 쓰는 경우 자료형을 맞춰주어야하기 때문에 다 뜯어서 쓰기.
-
-	// define P_cs (cam to robot)
-	VectorXd P_cs(3);
-	P_cs(0) = double(Poc_y);
-	P_cs(1) = double(Poc_z);
-	P_cs(2) = -double(Poc_x);
-
-	// define P_s (robot frame)
-	VectorXd P_s(3);
-	P_s(0) = x;
-	P_s(1) = y;
-	P_s(2) = z;
-
-	// rotation (x R_cs)
-	VectorXd rotate_P_s(3);
-	rotate_P_s(0) = -P_s(1);
-	rotate_P_s(1) = -P_s(2);
-	rotate_P_s(2) = P_s(0);
-
-	// define P_c (cam frame)
-	VectorXd P_c(3);
-	P_c = P_cs + rotate_P_s;
-
-	return P_c;
-}

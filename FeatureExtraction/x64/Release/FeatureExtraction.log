@@ -1,4 +1,4 @@
-﻿  FaceRobot_AIspeaker.cpp
+﻿  FaceRobot_Glansing_AND_ChatGPT.cpp
 D:\OpenFace - mouth\lib\3rdParty\dlib\include\dlib\console_progress_indicator.h(153,28): warning C4834: discarding return value of function with 'nodiscard' attribute
 D:\OpenFace - mouth\lib\3rdParty\dlib\include\dlib\image_transforms\morphological_operations.h(1,1): warning C4819: The file contains a character that cannot be represented in the current code page (949). Save the file in Unicode format to prevent data loss
 D:\OpenFace - mouth\lib\local\dynamixel_sdk\include\group_bulk_read.h(43,35): warning C4251: 'dynamixel::GroupBulkRead::id_list_': class 'std::vector<uchar,std::allocator<uchar>>' needs to have dll-interface to be used by clients of class 'dynamixel::GroupBulkRead'
@@ -33,10 +33,16 @@ D:\OpenFace - mouth\lib\local\Eigen\src\Core\arch\Default\Half.h(1,1): warning C
 D:\OpenFace - mouth\lib\local\Eigen\src\Core\arch\Default\BFloat16.h(1,1): warning C4819: The file contains a character that cannot be represented in the current code page (949). Save the file in Unicode format to prevent data loss
 D:\OpenFace - mouth\lib\local\Eigen\src\Core\arch\Default\GenericPacketMathFunctions.h(676,1): warning C4819: The file contains a character that cannot be represented in the current code page (949). Save the file in Unicode format to prevent data loss
 D:\OpenFace - mouth\lib\local\Eigen\src\Core\products\GeneralBlockPanelKernel.h(2063,1): warning C4819: The file contains a character that cannot be represented in the current code page (949). Save the file in Unicode format to prevent data loss
+D:\OpenFace - mouth\exe\FeatureExtraction\MacrosAndFunctions_v0.h(244,10): warning C4101: 'param_profile_velocity': unreferenced local variable
+D:\OpenFace - mouth\exe\FeatureExtraction\Eye_module.h(15,1): warning C4005: 'Poc_y': macro redefinition
+D:\OpenFace - mouth\exe\FeatureExtraction\MacrosAndFunctions_v0.h(116,1): message : see previous definition of 'Poc_y'
+D:\OpenFace - mouth\exe\FeatureExtraction\FaceRobot_Glansing_AND_ChatGPT.cpp(642,37): warning C4101: 'delta_mouth': unreferenced local variable
+D:\OpenFace - mouth\exe\FeatureExtraction\FaceRobot_Glansing_AND_ChatGPT.cpp(438,34): warning C4101: 'mouth_f': unreferenced local variable
+D:\OpenFace - mouth\exe\FeatureExtraction\FaceRobot_Glansing_AND_ChatGPT.cpp(168,10): warning C4101: 'gamma': unreferenced local variable
   0개 파일이 복사되었습니다.
   Generating code
   Not all modules are compiled with -Gy (function comdat), build without incremental LTCG.
-D:\OpenFace - mouth\exe\FeatureExtraction\MacrosAndFunctions_small_JA.h(1369): warning C4715: 'csv_read_row': not all control paths return a value
+D:\OpenFace - mouth\exe\FeatureExtraction\MacrosAndFunctions_v0.h(1489): warning C4715: 'csv_read_row': not all control paths return a value
   Finished generating code
   FeatureExtraction.vcxproj -> D:\OpenFace - mouth\x64\Release\FeatureExtraction.exe
   파일을 찾을 수 없습니다-Release

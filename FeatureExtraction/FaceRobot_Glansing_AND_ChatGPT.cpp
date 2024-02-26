@@ -248,14 +248,14 @@ int main(int argc, char** argv)
 				cv::Point3f ec = (e1 + e2) / 2;
 				ec = ec / norm(ec);
 
-				// 보정
+				// 
 				std::tie(Gaze_point_cam, Gaze_point_robot) = Gaze(eyescenter);
 				VectorXd temp = robot_to_cam(Gaze_point_robot(0), Gaze_point_robot(1), Gaze_point_robot(2));
 				cv::Mat1f calibrated_eyecenter(3, 28);
 				for (int i = 0; i < 3; i++) {
 					calibrated_eyecenter(i, 27) = temp(i);
 				}
-				std::tie(Eyegaze_point_cam, Eyegaze_point_robot) = EyeGaze(calibrated_eyecenter, ec, gazeAngle, DISTANCE2PLANE);
+				std::tie(Eyegaze_point_cam, Eyegaze_point_robot) = EyeGaze(eyescenter, ec, gazeAngle, DISTANCE2PLANE);
 				
 				
 				//VectorXd a = robot_to_cam(0, 0, 0);
@@ -268,7 +268,8 @@ int main(int argc, char** argv)
 					if (X.size() < N && Y.size() < N && flag_first_cal) {
 						X.push_back(radian_to_degree(gazeAngle(0)));
 						Y.push_back(radian_to_degree(gazeAngle(1)));
-						// 시선공유 무시
+						
+						// X, Y, Z 의 평균위치에 Glansing 하기 위해 X point, Y point, Z point 저장
 						X_point.push_back(Eyegaze_point_robot(0));
 						Y_point.push_back(Eyegaze_point_robot(1));
 						Z_point.push_back(Eyegaze_point_robot(2));

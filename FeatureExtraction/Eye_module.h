@@ -85,6 +85,37 @@ double deque_variance(std::deque<double> q) {
 	return variance;
 }
 
+
+VectorXd robot_to_cam(double x, double y, double z) {
+	// 실제값 * 보정값까지 고려
+	VectorXd pH(3);
+	// VectorXd 를 쓰는 경우와 Mat1f, Point3f 를 쓰는 경우 자료형을 맞춰주어야하기 때문에 다 뜯어서 쓰기.
+
+	// define P_cs (cam to robot)
+	VectorXd P_cs(3);
+	P_cs(0) = double(Poc_y);
+	P_cs(1) = double(Poc_z);
+	P_cs(2) = -double(Poc_x);
+
+	// define P_s (robot frame)
+	VectorXd P_s(3);
+	P_s(0) = x;
+	P_s(1) = y;
+	P_s(2) = z;
+
+	// rotation (x R_cs)
+	VectorXd rotate_P_s(3);
+	rotate_P_s(0) = -P_s(1);
+	rotate_P_s(1) = -P_s(2);
+	rotate_P_s(2) = P_s(0);
+
+	// define P_c (cam frame)
+	VectorXd P_c(3);
+	P_c = P_cs + rotate_P_s;
+
+	return P_c;
+}
+
 // cam 좌표에서 robot 좌표계로 변환
 VectorXd cam_to_robot(double x, double y, double z) {
 	// 실제 값 * 보정값까지 고려
@@ -118,6 +149,11 @@ VectorXd cam_to_robot(double x, double y, double z) {
 	else
 		pH(2) = (Poc_z + P_s(2));	// 카메라 or OpenFace가 조금 부정확한 거 같아서 임의로 튜닝
 
+	// 1050mm 를 기점으로 좌표값이 이상하여, 보정
+	double corr = 0.4 * (pH(0) - 1050) + pH(0);
+	for (int i = 0; i < 3; i++)
+		pH(i) *= corr / pH(0);
+
 	return pH;
 }
 
@@ -132,22 +168,20 @@ std::tuple< cv::Point3f, VectorXd > Gaze(cv::Mat1f eyescenter) {
 	cv::Point3f gaze_point_cam;
 
 	gaze_point_robot = cam_to_robot(eyescenter(0, 27), eyescenter(1, 27), eyescenter(2, 27));
-	double corr = 0.4 * (gaze_point_robot(0) - 1050) + gaze_point_robot(0);
-	for(int i = 0; i < 3; i++)
-		gaze_point_robot(i) *= corr / gaze_point_robot(0);
-	gaze_point_cam.x = eyescenter(0);
-	gaze_point_cam.y = eyescenter(1);
-	gaze_point_cam.z = eyescenter(2);
+	
+	gaze_point_cam.x = eyescenter(0, 27);
+	gaze_point_cam.y = eyescenter(1, 27);
+	gaze_point_cam.z = eyescenter(2, 27);
 
-	return std::make_tuple(gaze_point_cam, gaze_point_robot );
+	return std::make_tuple( gaze_point_cam, gaze_point_robot );
 }
 
 std::tuple<cv::Point3f, VectorXd> EyeGaze(cv::Mat1f eyescenter, cv::Point3f ec, cv::Vec2d gazeAngle, double distance = DISTANCE2PLANE) {
 	double _gamma = 0;
 	cv::Point3f P_c; // cam 시점에서의 eyecenter
 
-	cv::Point3f gaze_point_cam;
-	VectorXd gaze_point_robot;
+	cv::Point3f Eyegaze_point_cam;
+	VectorXd Eyegaze_point_robot;
 
 	// 클래스 맞춰주기
 	P_c.x = eyescenter(0, 27);
@@ -156,8 +190,8 @@ std::tuple<cv::Point3f, VectorXd> EyeGaze(cv::Mat1f eyescenter, cv::Point3f ec, 
 
 	// 로봇 눈위치에서 계산하기 위해 EYE LEYER의 높이를 SUM
 	// 로봇 눈 위치 중심으로 상하좌우 plane을 설치, cam 좌표계로 바꿔서 전달.
-	double upperplane = robot_to_cam(0.0, 0.0, EYE_LAYER_HEIGHT + distance + 300)(1);
-	double lowerplane = robot_to_cam(0.0, 0.0, EYE_LAYER_HEIGHT - distance - 300)(1);
+	double upperplane = robot_to_cam(0.0, 0.0, EYE_LAYER_HEIGHT + distance)(1);
+	double lowerplane = robot_to_cam(0.0, 0.0, EYE_LAYER_HEIGHT - distance)(1);
 	double rightplane = robot_to_cam(0.0, distance, 0.0)(0);
 	double leftplane = robot_to_cam(0.0, -distance, 0.0)(0);
 
@@ -171,15 +205,15 @@ std::tuple<cv::Point3f, VectorXd> EyeGaze(cv::Mat1f eyescenter, cv::Point3f ec, 
 	else {
 		cout << "gamma is undefined" << endl;
 	}
-	gaze_point_cam = P_c + _gamma * ec;
+	Eyegaze_point_cam = P_c + _gamma * ec;
 
 	// y축 limit을 넘어가게 되면, 
-	if (lowerplane < gaze_point_cam.y || gaze_point_cam.y < upperplane)
+	if (lowerplane < Eyegaze_point_cam.y || Eyegaze_point_cam.y < upperplane)
 		// Gaze 선택
 		return Gaze(eyescenter);
-	gaze_point_robot = cam_to_robot(gaze_point_cam.x, gaze_point_cam.y, gaze_point_cam.z);
+	Eyegaze_point_robot = cam_to_robot(Eyegaze_point_cam.x, Eyegaze_point_cam.y, Eyegaze_point_cam.z);
 
-	return std::make_tuple(gaze_point_cam, gaze_point_robot);
+	return std::make_tuple( Eyegaze_point_cam, Eyegaze_point_robot );
 }
 
 /*
