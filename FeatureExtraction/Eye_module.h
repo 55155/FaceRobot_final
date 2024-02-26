@@ -27,11 +27,13 @@ using namespace std;
 // 데이터셋은 2s를 기준으로 표준편차를 구해서 일정수준 이하로 판정될 때, gaze 하는 것으로 설정
 
 // 칼만필터는 어렵지 않아 22p
+// 이동평균필터의 재귀분산 계산
 double Moving_Avg_Filter(double X_k, double pre_avg, double X_kn, double N = 25) {
 	double avg;
 	avg = pre_avg + (X_k - X_kn) / N;
 	return avg;
 }
+// 분산계산시에 들어가는 sum^2을 재귀적으로 구한 값
 double recursive_sum2(double X_k, double pre_sum2, double X_kn) {
 	double sum2 = pre_sum2 + (X_k * X_k - X_kn * X_kn);
 	return sum2;
@@ -44,6 +46,7 @@ double recursive_Variance(double X_k, double pre_avg, double pre_val, double X_k
 	return var;
 }
 
+// 초기 평균 계산
 double deque_mean(std::deque<double> q) {
 	double initial_value = 0.0;
 	// std::accumulate 는 intial 값의 자료형을 따라감. 
@@ -53,6 +56,7 @@ double deque_mean(std::deque<double> q) {
 	return mean;
 }
 
+// 초기 sum^2 계산
 double deque_sum2(std::deque<double> q) {
 	double initial_value = 0.0;
 	while (q.size()) {
@@ -63,12 +67,13 @@ double deque_sum2(std::deque<double> q) {
 	return initial_value;
 }
 
+// sum^2에 의해 재귀적으로 구해진 분산 계산
 double variance(double sum2, double avg, double N) {
 	double var = (sum2 / N) - avg * avg;
 	return var;
 }
 
-
+// 초기 분산 계산
 double deque_variance(std::deque<double> q) {
 	double mean = deque_mean(q);
 	double sumSquaredDifferences = 0.0;
@@ -80,7 +85,7 @@ double deque_variance(std::deque<double> q) {
 	return variance;
 }
 
-
+// cam 좌표에서 robot 좌표계로 변환
 VectorXd cam_to_robot(double x, double y, double z) {
 	// 실제 값 * 보정값까지 고려
 	VectorXd pH(3);
@@ -121,6 +126,7 @@ double radian_to_degree(double radian) {
 	return degree;
 }
 
+// Gaze 시 cam좌표값과 robot좌표값 반환
 std::tuple< cv::Point3f, VectorXd > Gaze(cv::Mat1f eyescenter) {
 	VectorXd gaze_point_robot;
 	cv::Point3f gaze_point_cam;
@@ -163,11 +169,11 @@ std::tuple<cv::Point3f, VectorXd> EyeGaze(cv::Mat1f eyescenter, cv::Point3f ec, 
 		_gamma = (-P_c.x + leftplane) / ec.x;
 	}
 	else {
-		// cout << "gamma is undefined" << endl;
+		cout << "gamma is undefined" << endl;
 	}
 	gaze_point_cam = P_c + _gamma * ec;
 
-	// y축 limit
+	// y축 limit을 넘어가게 되면, 
 	if (lowerplane < gaze_point_cam.y || gaze_point_cam.y < upperplane)
 		// Gaze 선택
 		return Gaze(eyescenter);
@@ -176,6 +182,7 @@ std::tuple<cv::Point3f, VectorXd> EyeGaze(cv::Mat1f eyescenter, cv::Point3f ec, 
 	return std::make_tuple(gaze_point_cam, gaze_point_robot);
 }
 
+/*
 VectorXd EyeGaze(VectorXd Eyegaze_point_robot, double* L) {
 	double nL = *L + 0.04;
 	if (nL > 1) {
@@ -195,6 +202,7 @@ VectorXd Gaze(VectorXd Gaze_point_robot, double* L) {
 		*L -= 0.04;
 	return Gaze_point_robot;
 }
+*/
 
 VectorXd Lag_Interp(VectorXd Eyegaze_point_robot, VectorXd Gaze_point_robot, double L) {
 	VectorXd output = L * Eyegaze_point_robot + (1 - L) * Gaze_point_robot;
@@ -202,15 +210,19 @@ VectorXd Lag_Interp(VectorXd Eyegaze_point_robot, VectorXd Gaze_point_robot, dou
 	return output;
 }
 
+// 라그랑쥬 보간에 곱해지는 L값
 double x(double t, double T, double Glansing_time) { // t = arrange(0, 1000, 40)
 	double L; // L
 
+	// Gaze point -> Glansing point
 	if (t <= (T / 2.0)) {
 		L = (1.0 / 2.0) * (1.0 - cos((PI / (T / 2.0)) * t));
 	}
+	// Glansing point에 도달했을 때에는 1로 고정
 	else if ((T / 2.0) < t && t < Glansing_time + (T / 2.0)) { // Glansing
 		L = 1.0;
 	}
+	// Glansing point -> Gaze point
 	else if (Glansing_time + (T / 2.0) <= t) {
 		L = (1.0 / 2.0) * (1.0 + cos((PI / (T / 2.0)) * (t - (T / 2.0 + Glansing_time))));
 	}
@@ -230,21 +242,17 @@ VectorXd virtual_point(VectorXd Eyegaze_point_robot, VectorXd Gaze_point_robot) 
 	return Vp;
 }
 
+// 
 double Period(VectorXd Fixed_Eyegaze_point_robot, VectorXd Gaze_point_robot) { // d = plane 까지의 거리
 	double goal_point_yaw = findGaze_RPY_Gamma(Fixed_Eyegaze_point_robot)(2);
 	double start_point_yaw = findGaze_RPY_Gamma(Gaze_point_robot)(2);
-	
-	// dynamixel 변위 범위 : 0 ~ 4096
-	// max( goal_point_yaw - start_point ) = PI / 2			-> MAX_YAW에 의해 정의 
-	// min( goal_point_yaw - start_point ) = 20 degree		-> 실험적으로 정의
 
 	double max_yaw = MAX_YAW;
 	double min_yaw = PI / 9.0;
-	
+
 	// min - max normalization
 	// 최대 10s, 최소 2.0s
 	double t = 8.0 * (abs(goal_point_yaw - start_point_yaw) - min_yaw) / (max_yaw - min_yaw) + 2.0;
-	// cout << goal_point_yaw - start_point_yaw << "\t" << t << endl;
 	t *= 1000;
 	return t;
 }
