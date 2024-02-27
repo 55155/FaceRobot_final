@@ -36,8 +36,8 @@ D:\OpenFace - mouth\lib\local\Eigen\src\Core\products\GeneralBlockPanelKernel.h(
 D:\OpenFace - mouth\exe\FeatureExtraction\MacrosAndFunctions_v0.h(244,10): warning C4101: 'param_profile_velocity': unreferenced local variable
 D:\OpenFace - mouth\exe\FeatureExtraction\Eye_module.h(15,1): warning C4005: 'Poc_y': macro redefinition
 D:\OpenFace - mouth\exe\FeatureExtraction\MacrosAndFunctions_v0.h(116,1): message : see previous definition of 'Poc_y'
-D:\OpenFace - mouth\exe\FeatureExtraction\FaceRobot_Glansing_AND_ChatGPT.cpp(642,37): warning C4101: 'delta_mouth': unreferenced local variable
-D:\OpenFace - mouth\exe\FeatureExtraction\FaceRobot_Glansing_AND_ChatGPT.cpp(438,34): warning C4101: 'mouth_f': unreferenced local variable
+D:\OpenFace - mouth\exe\FeatureExtraction\FaceRobot_Glansing_AND_ChatGPT.cpp(641,37): warning C4101: 'delta_mouth': unreferenced local variable
+D:\OpenFace - mouth\exe\FeatureExtraction\FaceRobot_Glansing_AND_ChatGPT.cpp(437,34): warning C4101: 'mouth_f': unreferenced local variable
 D:\OpenFace - mouth\exe\FeatureExtraction\FaceRobot_Glansing_AND_ChatGPT.cpp(168,10): warning C4101: 'gamma': unreferenced local variable
   0개 파일이 복사되었습니다.
   Generating code
@@ -45,8 +45,8 @@ D:\OpenFace - mouth\exe\FeatureExtraction\FaceRobot_Glansing_AND_ChatGPT.cpp(168
 D:\OpenFace - mouth\exe\FeatureExtraction\MacrosAndFunctions_v0.h(1489): warning C4715: 'csv_read_row': not all control paths return a value
   Finished generating code
   FeatureExtraction.vcxproj -> D:\OpenFace - mouth\x64\Release\FeatureExtraction.exe
-  파일을 찾을 수 없습니다-Release
   0개 파일이 복사되었습니다.
+  파일을 찾을 수 없습니다-Release
   0개 파일이 복사되었습니다.
   0개 파일이 복사되었습니다.
   0개 파일이 복사되었습니다.

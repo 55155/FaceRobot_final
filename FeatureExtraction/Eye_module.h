@@ -157,6 +157,11 @@ VectorXd cam_to_robot(double x, double y, double z) {
 	return pH;
 }
 
+double degree_to_radian(double degree) {
+	double radian = (PI / 180.0) * degree;
+	return radian;
+}
+
 double radian_to_degree(double radian) {
 	double degree = (180.0 / PI) * radian;
 	return degree;
@@ -304,4 +309,12 @@ VectorXd Linear_Extrap(double) {
 	// Linear_Extrap = x, y, z
 }
 
+VectorXd Glansing_Test( double degree ) {
+	VectorXd Glansing_Test_point(3);
+	// 사람과 로봇의 거리 : 1M
+	Glansing_Test_point(0) = 1000;
+	Glansing_Test_point(1) = 0;
+	Glansing_Test_point(2) = tan(degree) * Glansing_Test_point(0);
 
+	return Glansing_Test_point;
+}

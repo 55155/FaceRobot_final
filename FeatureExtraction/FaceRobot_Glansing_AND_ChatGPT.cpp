@@ -112,7 +112,7 @@ int main(int argc, char** argv)
 	deque<double> Y_point;
 	deque<double> Z_point;
 
-	VectorXd Eyegaze_avg_point_robot(3);
+	VectorXd Glansing_avg_point_robot(3);
 	double avg_X = 0;
 	double avg_Y = 0;
 	double sum_X2 = 0;
@@ -183,9 +183,8 @@ int main(int argc, char** argv)
 
 			std::chrono::high_resolution_clock::time_point threadstartTime;
 			int threaditer = 0;
-			VectorXd Fixed_Eyegaze_point_robot; // 카메라에 의해 위치가 갱신되기 때문에, Glasing 지점 고정.
+			VectorXd Fixed_Glansing_point_robot; // 카메라에 의해 위치가 갱신되기 때문에, Glasing 지점 고정.
 			bool start_slope = false; // true = Glansing 의 시작, false = Glansing 의 끝
-			int pre_GlansingTime = -1000;
 			cv::Point3f gazeDirection0(0, 0, 0); cv::Point3f gazeDirection1(0, 0, 0); cv::Vec2d gazeAngle(0, 0);
 			double Glansing_time = 2000; // Glansing_time
 			double T; // slope 함수 주기
@@ -195,6 +194,7 @@ int main(int argc, char** argv)
 
 				cv::Mat_<uchar> grayscale_image = sequence_reader.GetGrayFrame();
 				bool detection_success = LandmarkDetector::DetectLandmarksInVideo(captured_image, face_model, det_parameters, grayscale_image);
+				
 				if (detection_success && face_model.eye_model) {
 					GazeAnalysis::EstimateGaze(face_model, gazeDirection0, sequence_reader.fx, sequence_reader.fy, sequence_reader.cx, sequence_reader.cy, true);
 					GazeAnalysis::EstimateGaze(face_model, gazeDirection1, sequence_reader.fx, sequence_reader.fy, sequence_reader.cx, sequence_reader.cy, false);
@@ -203,7 +203,8 @@ int main(int argc, char** argv)
 				cv::Mat sim_warped_img;
 				cv::Mat_<double> hog_descriptor; int num_hog_rows = 0, num_hog_cols = 0;
 				cv::Vec6d pose_estimate = LandmarkDetector::GetPose(face_model, sequence_reader.fx, sequence_reader.fy, sequence_reader.cx, sequence_reader.cy);
-
+				// cout << pose_estimate[3] << "\t" << pose_estimate[4] << "\t" << pose_estimate[5] << "\t" << endl;
+				cout << radian_to_degree(gazeAngle[0]) << "\t" << radian_to_degree(gazeAngle[1]) << endl;
 				// rows: 3, cols: 68
 				cv::Mat1f eyescenter = face_model.GetShape(sequence_reader.fx, sequence_reader.fy, sequence_reader.cx, sequence_reader.cy);
 				cv::Point3f P_c;
@@ -239,8 +240,8 @@ int main(int argc, char** argv)
 				VectorXd Gaze_point_robot;
 
 				// EyeGaze point define
-				cv::Point3f Eyegaze_point_cam;
-				VectorXd Eyegaze_point_robot;
+				cv::Point3f Glansing_point_cam;
+				VectorXd Glansing_point_robot;
 
 				// get gaze direction
 				cv::Point3f e1 = gazeDirection0;
@@ -248,60 +249,51 @@ int main(int argc, char** argv)
 				cv::Point3f ec = (e1 + e2) / 2;
 				ec = ec / norm(ec);
 
-				// 
+				// Gaze point, Glansing point 
 				std::tie(Gaze_point_cam, Gaze_point_robot) = Gaze(eyescenter);
-				VectorXd temp = robot_to_cam(Gaze_point_robot(0), Gaze_point_robot(1), Gaze_point_robot(2));
-				cv::Mat1f calibrated_eyecenter(3, 28);
-				for (int i = 0; i < 3; i++) {
-					calibrated_eyecenter(i, 27) = temp(i);
-				}
-				std::tie(Eyegaze_point_cam, Eyegaze_point_robot) = EyeGaze(eyescenter, ec, gazeAngle, DISTANCE2PLANE);
-				
-				
-				//VectorXd a = robot_to_cam(0, 0, 0);
-				//VectorXd b = cam_to_robot(a(0), a(1), a(2));
-
+				std::tie(Glansing_point_cam, Glansing_point_robot) = EyeGaze(eyescenter, ec, gazeAngle, DISTANCE2PLANE);
 
 				// 10cm 정도 떨어진 지점. 
-				if (BACKWARD_LIMIT < Eyegaze_point_robot(0) && Eyegaze_point_robot(0) < cam_to_robot(0, 0, P_c.z)(0)) { // 시선공유 해야하는 경우  rotation matrix
+				if (BACKWARD_LIMIT < Glansing_point_robot(0) && Glansing_point_robot(0) < cam_to_robot(0, 0, P_c.z)(0)) { // 시선공유 해야하는 경우  rotation matrix
 					// 50개 이전에는 분산을 구할 수 없음.
 					if (X.size() < N && Y.size() < N && flag_first_cal) {
 						X.push_back(radian_to_degree(gazeAngle(0)));
 						Y.push_back(radian_to_degree(gazeAngle(1)));
 						
 						// X, Y, Z 의 평균위치에 Glansing 하기 위해 X point, Y point, Z point 저장
-						X_point.push_back(Eyegaze_point_robot(0));
-						Y_point.push_back(Eyegaze_point_robot(1));
-						Z_point.push_back(Eyegaze_point_robot(2));
+						X_point.push_back(Glansing_point_robot(0));
+						Y_point.push_back(Glansing_point_robot(1));
+						Z_point.push_back(Glansing_point_robot(2));
 					}
 					// 처음 50개의 데이터가 들어왔을 때
 					else if (X.size() == N && Y.size() == N && flag_first_cal) {
-						Eyegaze_avg_point_robot(0) = deque_mean(X_point);
-						Eyegaze_avg_point_robot(1) = deque_mean(Y_point);
-						Eyegaze_avg_point_robot(2) = deque_mean(Z_point);
+						Glansing_avg_point_robot(0) = deque_mean(X_point);
+						Glansing_avg_point_robot(1) = deque_mean(Y_point);
+						Glansing_avg_point_robot(2) = deque_mean(Z_point);
 
 						flag_first_cal = false;
-						// initial mean
+						// 초기 mean, sum^2 계산
 						avg_X = deque_mean(X);
 						sum_X2 = deque_sum2(X);
 						avg_Y = deque_mean(Y);
 						sum_Y2 = deque_sum2(Y);
 					}
+					// 50개 데이터 이후에는 재귀적으로 평균, 분산 계산
 					else {
-						// avg_point_robot update
-						Eyegaze_avg_point_robot(0) = Moving_Avg_Filter(X_point.front(), Eyegaze_avg_point_robot(0), X_point.back(), N);
+						// Glansing_avg_point_robot update
+						Glansing_avg_point_robot(0) = Moving_Avg_Filter(X_point.front(), Glansing_avg_point_robot(0), X_point.back(), N);
 						X_point.pop_front();
-						X_point.push_back(Eyegaze_point_robot(0));
+						X_point.push_back(Glansing_point_robot(0));
 
-						Eyegaze_avg_point_robot(1) = Moving_Avg_Filter(Y_point.front(), Eyegaze_avg_point_robot(1), Y_point.back(), N);
+						Glansing_avg_point_robot(1) = Moving_Avg_Filter(Y_point.front(), Glansing_avg_point_robot(1), Y_point.back(), N);
 						Y_point.pop_front();
-						Y_point.push_back(Eyegaze_point_robot(1));
+						Y_point.push_back(Glansing_point_robot(1));
 
-						Eyegaze_avg_point_robot(2) = Moving_Avg_Filter(Z_point.front(), Eyegaze_avg_point_robot(2), Z_point.back(), N);
+						Glansing_avg_point_robot(2) = Moving_Avg_Filter(Z_point.front(), Glansing_avg_point_robot(2), Z_point.back(), N);
 						Z_point.pop_front();
-						Z_point.push_back(Eyegaze_point_robot(2));
+						Z_point.push_back(Glansing_point_robot(2));
 
-						// gaze 하는 과정에서 조금 스무스한 움직임을 줘야함. -> 보간
+						// X - Z ANGLE 평균, 분산 계산
 						double X_kn = X.front();
 						X.pop_front();
 						double X_k = radian_to_degree(gazeAngle(0));
@@ -315,6 +307,7 @@ int main(int argc, char** argv)
 						sum_X2 = recursive_sum2(X_k, pre_sum_X2, X_kn);
 						var_X = variance(sum_X2, avg_X, N);
 
+						// Y-Z ANGLE 평균, 분산 계산
 						double Y_kn = Y.front();
 						Y.pop_front();
 						double Y_k = radian_to_degree(gazeAngle(1));
@@ -328,6 +321,7 @@ int main(int argc, char** argv)
 						sum_Y2 = recursive_sum2(Y_k, pre_sum_Y2, Y_kn);
 						var_Y = variance(sum_Y2, avg_Y, N);
 
+						// 표준편차 계산
 						var = sqrt(var_Y + var_X);
 					}
 				}
@@ -335,6 +329,7 @@ int main(int argc, char** argv)
 					// 다시 초기값으로 돌아가기.
 					flag_first_cal = true;
 					while (!Y.empty()) {
+						// 이전 좌표값들 모두 비우기
 						X.pop_back();
 						Y.pop_back();
 						X_point.pop_back();
@@ -350,20 +345,23 @@ int main(int argc, char** argv)
 				// cout << Gaze_point_robot(0) << "\t" << Gaze_point_robot(1) << "\t" << Gaze_point_robot(2) << "\t" << endl;
 				// 2초동안 어딘가를 응시하고 있으면서, 그 분산이 크지 않다면, 
 				if (var < threshold_var && Y.size() == N && !start_slope) {
-					cout << Eyegaze_avg_point_robot(0) << "\t" << Eyegaze_avg_point_robot(1) << "\t" << Eyegaze_avg_point_robot(2) << "\t" << endl;
-					Fixed_Eyegaze_point_robot = Eyegaze_point_robot;
+					// cout << Glansing_avg_point_robot(0) << "\t" << Glansing_avg_point_robot(1) << "\t" << Glansing_avg_point_robot(2) << "\t" << endl;
+					cout << avg_X << "\t"  << avg_Y << endl;
+					Fixed_Glansing_point_robot = Glansing_point_robot;			// Glansing point 고정
 					t = 0;
-					start_slope = true;
-					T = Period(Fixed_Eyegaze_point_robot, Gaze_point_robot);
+					start_slope = true;											// Glansing point로 서서히 이동
+					T = Period(Fixed_Glansing_point_robot, Gaze_point_robot);	// T / 2 는 이동하는데 소요되는 시간, 
 				}
 
+
 				if (start_slope) {
-					L = x(t, T, Glansing_time);
-					pH = Lag_Interp(Fixed_Eyegaze_point_robot, Gaze_point_robot, L);
-					if (t >= T + Glansing_time && var > threshold_var) {
+					L = x(t, T, Glansing_time);											// 시간 t에 따른 L값 저장
+					pH = Lag_Interp(Fixed_Glansing_point_robot, Gaze_point_robot, L);	// L값에 따른 보간 수행
+					if (t >= T + Glansing_time && var > threshold_var) {				// 만약 Transition이 모두 수행되었을떄, 
 						t = 0;
 						start_slope = false;
 						while (X.size() && Y.size()) {
+							// 이전 좌표값들 모두 비우기
 							X.pop_back();
 							Y.pop_back();
 							X_point.pop_back();
@@ -372,16 +370,17 @@ int main(int argc, char** argv)
 						}
 					}
 					if(t >= T/2 + Glansing_time && var <= threshold_var){
-						// 내려가야하는 시점에 해당위치를 보고 있으면, 
-						t = T / 2;
+						// Gaze로 복귀해야하는 시점에도 해당위치를 보고 있으면, 
+						t = T / 2;		// 복귀하지 않고 Glansing 
 					}
-					t += FREQUENCY.count();
+					t += FREQUENCY.count(); // t update
 				}
 				else {
+					// Transition이 되지 않을 때에는 L = 0, 즉 Gaze
 					L = 0;
-					pH = Lag_Interp(Eyegaze_point_robot, Gaze_point_robot, L);
+					pH = Lag_Interp(Glansing_point_robot, Gaze_point_robot, L);
 				}
-				
+				// pH = Glansing_Test(degree_to_radian(20));
 				RPY = findGaze_RPY_Gamma(pH);
 				roll_OF = RPY(0);
 				pitch_OF = RPY(1);
