@@ -411,8 +411,7 @@ int main(int argc, char** argv)
 					flag_initial = false;
 					threadstartTime = std::chrono::high_resolution_clock::now();
 				}
-
-	
+				
 				fps_tracker.AddFrame();
 
 				// Displaying the tracking visualizations

@@ -204,7 +204,6 @@ int main(int argc, char** argv)
 				cv::Mat_<double> hog_descriptor; int num_hog_rows = 0, num_hog_cols = 0;
 				cv::Vec6d pose_estimate = LandmarkDetector::GetPose(face_model, sequence_reader.fx, sequence_reader.fy, sequence_reader.cx, sequence_reader.cy);
 				// cout << pose_estimate[3] << "\t" << pose_estimate[4] << "\t" << pose_estimate[5] << "\t" << endl;
-				cout << radian_to_degree(gazeAngle[0]) << "\t" << radian_to_degree(gazeAngle[1]) << endl;
 				// rows: 3, cols: 68
 				cv::Mat1f eyescenter = face_model.GetShape(sequence_reader.fx, sequence_reader.fy, sequence_reader.cx, sequence_reader.cy);
 				cv::Point3f P_c;
@@ -346,7 +345,6 @@ int main(int argc, char** argv)
 				// 2초동안 어딘가를 응시하고 있으면서, 그 분산이 크지 않다면, 
 				if (var < threshold_var && Y.size() == N && !start_slope) {
 					// cout << Glansing_avg_point_robot(0) << "\t" << Glansing_avg_point_robot(1) << "\t" << Glansing_avg_point_robot(2) << "\t" << endl;
-					cout << avg_X << "\t"  << avg_Y << endl;
 					Fixed_Glansing_point_robot = Glansing_point_robot;			// Glansing point 고정
 					t = 0;
 					start_slope = true;											// Glansing point로 서서히 이동
@@ -380,6 +378,7 @@ int main(int argc, char** argv)
 					L = 0;
 					pH = Lag_Interp(Glansing_point_robot, Gaze_point_robot, L);
 				}
+
 				// pH = Glansing_Test(degree_to_radian(20));
 				RPY = findGaze_RPY_Gamma(pH);
 				roll_OF = RPY(0);
@@ -391,7 +390,8 @@ int main(int argc, char** argv)
 					flag_initial = false;
 					threadstartTime = std::chrono::high_resolution_clock::now();
 				}
-
+				int n = face_model.detected_landmarks.rows / 2;
+				cout << cvRound(face_model.detected_landmarks.at<float>(27)) << "\t" << cvRound(face_model.detected_landmarks.at<float>(27+n)) << endl;
 				fps_tracker.AddFrame();
 
 				// Displaying the tracking visualizations

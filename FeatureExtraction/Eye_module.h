@@ -318,3 +318,5 @@ VectorXd Glansing_Test( double degree ) {
 
 	return Glansing_Test_point;
 }
+
+// calibration 에 필요한 데이터 수집
